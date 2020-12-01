@@ -79,7 +79,7 @@ def logout_user(request):
 def zip_and_download(request):
     if request.user.is_superuser:
         os.system("rm -rf /var/www/yazdani/All_files.zip")
-        os.system("zip -r /var/www/yazdani/All_files.zip /var/www/yazdani/media")
+        os.system("zip -r All_files.zip media")
         response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
         return response
 
