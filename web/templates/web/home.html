@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Home</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="container">
+            <div class="container">
+                <p>Welcome <b>{{ request.user.username }}</b></p>
+                <p>You can upload your <b>answers</b> for us using form below!<br>
+                Thanks in advance!</p>
+                <form action="{% url 'file_upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="label_for_file_input"></label>
+                    <input type="file" name="myfile" class="input_upload" required>
+                    <button type="button" class="browse">Browse</button>
+                    <button type="submit">Upload</button>
+                    <button type="button" id="load_history">Upload history</button>
+                </form>
+            </div>
+            <br><br>
+            {% if not uploaded_files|length == 0 %}
+            <div id="upload_div">
+                <h4>Uploaded Files</h4>
+                <div class="container">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Upload Date</th>
+                                <th>File Name</th>
+                                <th>File Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in uploaded_files %}
+                            <tr>
+                                <td>{{ file.upload_date }}</td>
+                                <td>{{ file.title }}</td>
+                                <td><a href="{{ file.file_path }}">{{ file.file_path }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+            <br><br>
+        </div>
+    </div>
+{% endblock %}
+
+

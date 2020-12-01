@@ -1,0 +1,68 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% block head %}
+    <title>Base</title>
+    {% endblock %}
+    <link rel="icon" href="{% static 'web/images/favicon.jpeg' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'web/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'web/assets/css/index.css' %}">
+    <!--[if lte IE 8]><script src="{% static 'web/assets/js/ie/html5shiv.js' %}"></script><![endif]-->
+    <link rel="stylesheet" href="{% static 'web/assets/css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'web/assets/css/kpro.css' %}" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="{% static 'web/assets/css/ie9.css' %}" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="{% static 'web/assets/css/ie8.css' %}" /><![endif]-->
+    <noscript><link rel="stylesheet" href="{% static 'web/assets/css/noscript.css' %}" /></noscript>
+
+</head>
+<body class="is-preload">
+    <br>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <div class="inner ">
+                <div class="container">
+                    <!-- Logo -->
+                    <a href="https://www.mehdiyazdani.ir" class="logo">
+                        <span class="symbol"><img src="{% static 'web/images/logo.svg' %}" alt="" /></span><span class="title">Dr. Yazdani</span>
+                    </a>
+
+<!--                    &lt;!&ndash; Nav &ndash;&gt;-->
+<!--                    <nav>-->
+<!--                        <ul>-->
+<!--                            <li><a href="#menu">Menu</a></li>-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+                </div>
+            </div>
+        </header>
+
+
+        {% block body %}
+        {% endblock %}
+
+        <!-- Footer -->
+        <footer id="footer">
+                <div class="inner container">
+                    <ul class="copyright">
+                        <li>&copy; Mehdi Yazdani. All rights reserved</li>
+                    </ul>
+                </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'web/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'web/assets/js/browser.min.js' %}"></script>
+    <script src="{% static 'web/assets/js/breakpoints.min.js' %}"></script>
+    <script src="{% static 'web/assets/js/util.js' %}"></script>
+    <script src="{% static 'web/assets/js/main.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--[if lte IE 8]><script src="{% static 'web/assets/js/ie/respond.min.js' %}"></script><![endif]-->
+</body>
+</html>
