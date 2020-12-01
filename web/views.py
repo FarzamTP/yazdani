@@ -82,7 +82,7 @@ def zip_and_download(request):
             for root, dirs, files in os.walk('./media/'):
                 for filename in files:
                     file.write(os.path.join(root, filename))
-        response = FileResponse(open(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'rb'))
+        response = FileResponse(open(os.path.join('/var/www/yazdani', 'All_Files.zip'), 'rb'))
         return response
 
 
