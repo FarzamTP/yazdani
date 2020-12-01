@@ -78,9 +78,11 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        os.system("rm -rf All_files.zip")
-        os.system("zip -r All_files.zip media")
-        response = FileResponse(open(os.path.join(settings.BASE_DIR, 'All_files.zip'), 'rb'))
+        file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
+        media_dir = settings.MEDIA_URL
+        os.system(f"rm -rf {file_path}")
+        os.system(f"zip -r {file_path} {media_dir}")
+        response = FileResponse(open(file_path, 'rb'))
         return response
 
 
