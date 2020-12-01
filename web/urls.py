@@ -11,7 +11,7 @@ urlpatterns = [
     url('^home/upload_file/$', views.file_upload, name='file_upload'),
     url('^home/load_history/$', views.load_history, name='load_history'),
     url('^home/upload_file/load_history/$', views.load_history, name='load_history'),
-    url('terms_and_conditions/$', views.auth_tc, name='auth_tc'),
+    url('^home/zip_and_download/$', views.zip_and_download, name='zip_and_download'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,11 +3,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.http import FileResponse
 from django.utils.timezone import now
 from .models import Document
+from zipfile import ZipFile
+import os
 
 
-# Main page render
 def home(request):
     if request.method == "GET":
         if request.user.is_authenticated:
@@ -73,13 +75,13 @@ def logout_user(request):
         logout(request)
         return redirect(home)
 
-# Receives the post request from t&c form and sends back the response.
-def auth_tc(request):
-    if request.method == 'POST':
-        value = request.POST.get('agreement')
-        if value == 'true':
-            request.user.userprofile.agreement = True
-            request.user.userprofile.save()
+def zip_and_download(request):
+    if request.user.is_superuser:
+        with ZipFile('../All_Files.zip', 'w') as file:
+            for root, dirs, files in os.walk('./media/'):
+                for filename in files:
+                    file.write(os.path.join(root, filename))
+        response = FileResponse(open('../All_Files.zip', 'rb'))
+        return response
 
-    agreement = request.user.userprofile.agreement
-    return JsonResponse(data={'agreement': agreement})
+

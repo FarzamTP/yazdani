@@ -15,6 +15,9 @@
                 <p class="farsi"><b>{{ request.user.username }}</b> خوش آمدید. </p>
                 <p class="farsi">شما میتوانید جواب‌های خود را با استفاده از دگمه‌های زیر انتخاب و ارسال کنید.</p>
                 <p class="farsi"><a href="{% url 'logout' %}">خروج از حساب کاربری</a></p>
+                {% if request.user.is_superuser %}
+                <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
+                {% endif %}
                 <form action="{% url 'file_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label class="label_for_file_input"></label>
