@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse
 from django.utils.timezone import now
 from .models import Document
+from django.conf import settings
 from zipfile import ZipFile
 import os
 
@@ -81,7 +82,7 @@ def zip_and_download(request):
             for root, dirs, files in os.walk('./media/'):
                 for filename in files:
                     file.write(os.path.join(root, filename))
-        response = FileResponse(open('All_Files.zip', 'rb'))
+        response = FileResponse(open(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'rb'))
         return response
 
 
