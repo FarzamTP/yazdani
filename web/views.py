@@ -78,11 +78,14 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        with ZipFile('var/www/yazdani/All_Files.zip', 'w') as file:
+        with ZipFile(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'w') as file:
             for root, dirs, files in os.walk('./media/'):
                 for filename in files:
                     file.write(os.path.join(root, filename))
-        response = FileResponse(open('var/www/yazdani/All_Files.zip'), 'rb')
+
+        zip_file = open(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'r')
+        response = HttpResponse(zip_file, content_type='application/force-download')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % 'All_Files.zip'
         return response
 
 
