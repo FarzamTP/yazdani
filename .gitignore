@@ -6,11 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
-media/
+media/*
 db.sqlite3
-static/
+static/*
 .idea
-web/migrations/
+web/migrations/*
 
 # Distribution / packaging
 .Python

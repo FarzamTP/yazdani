@@ -1,0 +1,26 @@
+.termsx {
+
+    overflow-y: scroll;
+
+    height: 300px;
+
+    width: 100%;
+
+    border: 1px solid #DDD;
+
+    padding: 10px;
+
+}
+
+input[type="file"] {
+
+    opacity:0;
+}
+
+#logout {
+    margin-right: 0%;
+}
+
+#load_history {
+    visibility: hidden;
+}
