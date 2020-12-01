@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse
 from django.utils.timezone import now
 from .models import Document
-from django.conf import settings
 from zipfile import ZipFile
 import os
 
@@ -78,14 +77,11 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        with ZipFile(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'w') as file:
+        with ZipFile('All_Files.zip', 'w') as file:
             for root, dirs, files in os.walk('./media/'):
                 for filename in files:
                     file.write(os.path.join(root, filename))
-
-        zip_file = open(os.path.join(settings.BASE_DIR, 'All_Files.zip'), 'r')
-        response = HttpResponse(zip_file, content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename="%s"' % 'All_Files.zip'
+        response = FileResponse(open('All_Files.zip', 'rb'))
         return response
 
 
