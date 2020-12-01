@@ -77,11 +77,11 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        with ZipFile('../All_Files.zip', 'w') as file:
+        with ZipFile('All_Files.zip', 'w') as file:
             for root, dirs, files in os.walk('./media/'):
                 for filename in files:
                     file.write(os.path.join(root, filename))
-        response = FileResponse(open('../All_Files.zip', 'rb'))
+        response = FileResponse(open('All_Files.zip', 'rb'))
         return response
 
 
