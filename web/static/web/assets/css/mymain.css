@@ -1,0 +1,15 @@
+@font-face {
+    font-family: Sahel;
+    src: url('../../fonts/Sahel.eot');
+    src: url('../../fonts/Sahel.eot?#iefix') format('embedded-opentype'),
+    url('../../fonts/Sahel.woff') format('woff'),
+    url('../../fonts/Sahel.ttf') format('truetype');
+    font-weight: normal;
+}
+
+.farsi {
+    text-align-last: right;
+    direction: rtl;
+    font-family: Sahel;
+    letter-spacing: 0px;
+}

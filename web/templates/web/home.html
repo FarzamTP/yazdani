@@ -12,9 +12,9 @@
                 {% if request.user.is_superuser %}
                 <p><b>Dr. Yazdani's Admin Panel</b></p>
                 {% endif %}
-                <p>Welcome <b>{{ request.user.username }}</b></p>
-                <p>You can upload your <b>answers</b> for us using form below!<br>
-                Thanks in advance!</p>
+                <p class="farsi"><b>{{ request.user.username }}</b> خوش آمدید. </p>
+                <p class="farsi">شما میتوانید جواب‌های خود را با استفاده از دگمه‌های زیر انتخاب و ارسال کنید.</p>
+                <p class="farsi"><a href="{% url 'logout' %}">خروج از حساب کاربری</a></p>
                 <form action="{% url 'file_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label class="label_for_file_input"></label>
