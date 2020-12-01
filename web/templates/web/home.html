@@ -9,6 +9,9 @@
     <div class="container">
         <div class="container">
             <div class="container">
+                {% if request.user.is_superuser %}
+                <p><b>Dr. Yazdani's Admin Panel</b></p>
+                {% endif %}
                 <p>Welcome <b>{{ request.user.username }}</b></p>
                 <p>You can upload your <b>answers</b> for us using form below!<br>
                 Thanks in advance!</p>
@@ -30,6 +33,7 @@
                         <thead>
                             <tr>
                                 <th>Upload Date</th>
+                                <th>Author</th>
                                 <th>File Name</th>
                                 <th>File Link</th>
                             </tr>
@@ -38,6 +42,7 @@
                             {% for file in uploaded_files %}
                             <tr>
                                 <td>{{ file.upload_date }}</td>
+                                <td>{{ file.author }}</td>
                                 <td>{{ file.title }}</td>
                                 <td><a href="{{ file.file_path }}">{{ file.file_path }}</a></td>
                             </tr>

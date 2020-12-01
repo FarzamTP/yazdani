@@ -19,7 +19,7 @@ class Document(models.Model):
     upload_date = models.DateTimeField(default=now)
 
     def __str__(self):
-        return "{}-{}-{}".format(self.title, self.author.username, self.upload_date)
+        return "{}-{}-{}".format(self.author.username, self.title, self.upload_date)
 
 # Creates a user profile after adding a user.
 def create_profile(sender, **kwargs):

@@ -6,13 +6,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.timezone import now
 from .models import Document
 
-existing_documents = Document.objects.all()
 
 # Main page render
 def home(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            user_docs = existing_documents.filter(author=request.user)
+            if request.user.is_superuser:
+                user_docs = Document.objects.all()
+            else:
+                user_docs = Document.objects.all().filter(author=request.user)
             data = {'uploaded_files': user_docs}
             return render(request, 'web/home.html', context=data)
         else:
@@ -46,7 +48,7 @@ def file_upload(request):
                                 upload_date=now())
             document.save()
             request.user.userprofile.save()
-            return render(request, 'web/home.html')
+            return redirect(home)
     else:
         return redirect(home)
 
@@ -55,7 +57,7 @@ def file_upload(request):
 def load_history(request):
     if request.method == 'POST':
         if request.POST.get('request') == 'load_history_request':
-            user_docs = existing_documents.filter(author=request.user).values()
+            user_docs = Document.objects.all().filter(author=request.user).values()
             data = {
                 'uploaded_files': list(user_docs)
             }
