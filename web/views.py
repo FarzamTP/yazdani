@@ -7,6 +7,7 @@ from django.http import FileResponse
 from django.utils.timezone import now
 from .models import Document
 from zipfile import ZipFile
+from django.conf import settings
 import os
 
 
@@ -78,7 +79,7 @@ def logout_user(request):
 def zip_and_download(request):
     if request.user.is_superuser:
         os.system("zip -r All_files.zip media")
-        response = FileResponse(open('/var/www/yazdani/All_files.zip', 'rb'))
+        response = FileResponse(open(os.path.join(settings.BASE_DIR, 'All_files.zip'), 'rb'))
         return response
 
 
