@@ -78,10 +78,9 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
-        os.system(f"rm -rf {file_path}")
-        os.system(f"zip -r {file_path} media")
-        response = FileResponse(open(file_path, 'rb'))
+        os.system("rm -rf /var/www/yazdani/All_files.zip")
+        os.system("zip -r /var/www/yazdani/All_files.zip /var/www/yazdani/media")
+        response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
         return response
 
 
