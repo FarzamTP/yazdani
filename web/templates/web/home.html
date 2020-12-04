@@ -38,9 +38,9 @@
                 {% if request.user.is_superuser %}
                 <form action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="text" id="exam_name" name="exam_name" placeholder="Exam Name"><br>
+                    <input type="text" id="exam_name" name="exam_name" placeholder="Exam Name" required><br>
                     <label for="due_date">Exam Due Date:</label>
-                    <input type="datetime-local" id="due_date" name="due_date"><br><br>
+                    <input type="datetime-local" id="due_date" name="due_date" required><br><br>
                     <label class="label_for_file_input"></label>
                     <input type="file" name="myfile" class="input_upload" required>
                     <button type="button" class="browse">Browse</button>
