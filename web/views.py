@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import FileResponse
 from django.utils.timezone import now
-from .models import Document, UserProfile
+from .models import Document, UserProfile, Exam
 from zipfile import ZipFile
 from django.conf import settings
+from datetime import datetime
 import os
 
 
@@ -17,16 +18,17 @@ def home(request):
             questions_uploaded = False
             if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
                 questions_uploaded = True
-
+            exams = Exam.objects.all()
             able_to_download_file_zip_file = request.user.userprofile.able_to_download_file_zip_file
 
             if request.user.is_superuser:
-                user_docs = Document.objects.all()
+                user_docs = Document.objects.all().filter(type='Answer')
             else:
                 user_docs = Document.objects.all().filter(author=request.user)
             data = {'uploaded_files': user_docs,
                     'questions_uploaded': questions_uploaded,
-                    'able_to_download_file_zip_file': able_to_download_file_zip_file}
+                    'able_to_download_file_zip_file': able_to_download_file_zip_file,
+                    'exams': exams}
 
             return render(request, 'web/home.html', context=data)
         else:
@@ -58,16 +60,29 @@ def file_upload(request):
 
         if request.FILES['myfile']:
             myfile = request.FILES['myfile']
-            fs = FileSystemStorage()
-            filename = fs.save(request.user.username + '/' + myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            document = Document(author=request.user, title=myfile.name,
-                                file=filename,
-                                file_path=uploaded_file_url,
-                                upload_date=now())
-            document.save()
-            request.user.userprofile.save()
-            return redirect(home)
+            exam_name = request.POST.get('exam_name')
+            exam = Exam.objects.all().filter(name=exam_name)[0]
+
+            if now() < exam.due_time:
+                fs = FileSystemStorage()
+                filename = fs.save(request.user.username + '/' + myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                document = Document(exam=exam, author=request.user, title=myfile.name, type='Answer',
+                                    file=filename,
+                                    file_path=uploaded_file_url,
+                                    upload_date=now())
+                document.save()
+                request.user.userprofile.save()
+                return redirect(home)
+            else:
+                questions_uploaded = False
+                if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
+                    questions_uploaded = True
+                exams = Exam.objects.all()
+                data = {'questions_uploaded': questions_uploaded,
+                        'exams': exams,
+                        'status': 403}
+                return render(request, 'web/home.html', context=data)
     else:
         return redirect(home)
 
@@ -82,11 +97,16 @@ def question_upload(request):
             old_questions_file.delete()
 
         if request.FILES['myfile']:
+            exam_name = request.POST.get('exam_name')
             myfile = request.FILES['myfile']
+            due_date = request.POST.get('due_date')
+            exam = Exam(creator=request.user, name=exam_name, due_time=due_date)
+            exam.save()
+
             fs = FileSystemStorage()
             filename = fs.save('Mid-term-Questions.pdf', myfile)
             uploaded_file_url = fs.url(filename)
-            document = Document(author=request.user, title=myfile.name,
+            document = Document(exam=exam, author=request.user, title=myfile.name, type='Question',
                                 file=filename,
                                 file_path=uploaded_file_url,
                                 upload_date=now())
@@ -121,3 +141,20 @@ def download_question_file(request):
         questions_file_path = os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')
         response = FileResponse(open(questions_file_path, 'rb'))
         return response
+
+@login_required
+def change_password(request):
+    if request.method == 'GET':
+        return render(request, 'web/change_password.html')
+    else:
+        new_pass = request.POST.get('new_pass')
+        new_pass_rep = request.POST.get('new_pass_rep')
+        if new_pass != new_pass_rep:
+            data = {'status': 205}
+            return render(request, 'web/change_password.html', context=data)
+        user = request.user
+        user.set_password(new_pass)
+        user.save()
+        logout(request)
+        data = {'login_status': 204}
+        return render(request, 'web/login.html', context=data)

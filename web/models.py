@@ -11,16 +11,35 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-# User uploaded documents
-class Document(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    file = models.FileField(upload_to='uploaded_data')
-    file_path = models.CharField(max_length=100, default='uploaded_data/')
-    upload_date = models.DateTimeField(default=now)
+class Exam(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=128)
+    due_time = models.DateTimeField(default=now)
 
     def __str__(self):
-        return "{}-{}-{}".format(self.author.username, self.title, self.upload_date)
+        return "{}-{}".format(self.name, self.due_time)
+
+# User uploaded documents
+class Document(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    file = models.FileField(upload_to='media/')
+    file_path = models.CharField(max_length=100, default='media/')
+    upload_date = models.DateTimeField(default=now)
+
+    answer = 'Answer'
+    question = 'Question'
+
+    type_choices = (
+        (answer, 'Answer'),
+        (question, 'Question'),
+    )
+
+    type = models.CharField(blank=True, choices=type_choices, default=question, max_length=64)
+
+    def __str__(self):
+        return "{}-{}-{}-{}".format(self.type, self.author.username, self.title, self.upload_date)
 
 # Creates a user profile after adding a user.
 def create_profile(sender, **kwargs):

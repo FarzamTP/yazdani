@@ -25,7 +25,7 @@ SECRET_KEY = '8a-nzzh9d(bax7hcz@*bv0&-=tg+pxy$g^5yr@w5*(qeb%^3=e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['46.101.255.11', 'mehdiyazdani.ir', 'localhost']
+ALLOWED_HOSTS = ['46.101.255.11', 'mehdiyazdani.ir', 'www.mehdiyazdani.ir', 'localhost']
 
 
 # Application definition
@@ -124,4 +124,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-LOGIN_REDIRECT_URL = 'home/'
+LOGIN_URL = '/home'
+# LOGIN_REDIRECT_URL = '/'

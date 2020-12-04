@@ -11,6 +11,10 @@
             <div class="alert alert-danger">
                 <h3 class="farsi">نام کاربری و رمز عبور مطابقت ندارند. لطفا دوباره تلاش کنید.</h3>
             </div>
+            {% elif login_status == 204 %}
+            <div class="alert alert-info">
+                <h3 class="farsi">رمز عبور شما با موفقیت تغییر کرد. لطفا دوباره با رمز عبور جدید وارد حساب کاربری خود شوید.</h3>
+            </div>
             {% endif %}
             <h2>Login</h2>
                 {% csrf_token %}

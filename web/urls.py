@@ -10,6 +10,7 @@ urlpatterns = [
     url('^home/$', views.home, name='home'),
     url('^home/upload_file/$', views.file_upload, name='file_upload'),
     url('^home/question_upload/$', views.question_upload, name='question_upload'),
+    url('^home/change_password/$', views.change_password, name='change_password'),
     url('^home/zip_and_download/$', views.zip_and_download, name='zip_and_download'),
     url('^home/download_question_file/$', views.download_question_file, name='download_question_file'),
 ]

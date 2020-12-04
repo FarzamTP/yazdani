@@ -9,6 +9,12 @@
     <div class="container">
         <div class="container">
             <div class="container">
+                {% if status == 403 %}
+                <div class="alert alert-danger">
+                    <h3 class="farsi">متاسفانه زمان آزمون به پایان رسیده است.</h3>
+                </div>
+                {% endif %}
+
                 {% if request.user.is_superuser %}
                 <h2 class="farsi"><b>پنل دسترسی ادمین</b></h2>
                 {% endif %}
@@ -27,18 +33,29 @@
                 <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
                 {% endif %}
                 {% endif %}
+                <p class="farsi"><a href="{% url 'change_password' %}">تغییر رمز عبور</a></p>
                 <p class="farsi"><a href="{% url 'logout' %}">خروج از حساب کاربری</a></p>
                 {% if request.user.is_superuser %}
                 <form action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <input type="text" id="exam_name" name="exam_name" placeholder="Exam Name"><br>
+                    <label for="due_date">Exam Due Date:</label>
+                    <input type="datetime-local" id="due_date" name="due_date"><br><br>
                     <label class="label_for_file_input"></label>
-                    <input type="file" name="myfile" class="input_upload" accept="application/pdf" required>
+                    <input type="file" name="myfile" class="input_upload" required>
                     <button type="button" class="browse">Browse</button>
-                    <button type="submit">Upload</button>
+                    <button type="submit">Create Exam</button>
                 </form>
                 {% else %}
                 <form action="{% url 'file_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <br>
+                    <select name="exam_name" id="exam_name_selector">
+                        {% for exam in exams %}
+                            <option value="{{ exam.name }}">{{ exam.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
                     <label class="label_for_file_input"></label>
                     <input type="file" name="myfile" class="input_upload" required>
                     <button type="button" class="browse">Browse</button>
@@ -55,6 +72,7 @@
                         <thead>
                             <tr>
                                 <th>Upload Date</th>
+                                <th>Exam Name</th>
                                 <th>Author</th>
                                 <th>File Name</th>
                                 <th>File Link</th>
@@ -64,6 +82,7 @@
                             {% for file in uploaded_files %}
                             <tr>
                                 <td>{{ file.upload_date }}</td>
+                                <td>{{ file.exam.name }}</td>
                                 <td>{{ file.author }}</td>
                                 <td>{{ file.title }}</td>
                                 <td><a href="{{ file.file_path }}" download>{{ file.file_path }}</a></td>
