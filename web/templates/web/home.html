@@ -13,7 +13,11 @@
                 <h2 class="farsi"><b>پنل دسترسی ادمین</b></h2>
                 {% endif %}
                 <p class="farsi"><b>{{ request.user.username }}</b> خوش آمدید. </p>
+                {% if request.is_superuser %}
                 <p class="farsi">شما میتوانید سوالات آزمون را با فرمت <b>PDF</b>، با استفاده از دگمه‌های زیر انتخاب و ارسال کنید.</p>
+                {% else %}
+                <p class="farsi">دانشجوی عزیز با استفاده از دگمه‌های زیر فایل پاسخ‌های آزمون خود را بارگزاری و ارسال کنید.</p>
+                {% endif %}
                 <p class="farsi"><a style="color: red" href="{% url 'download_question_file' %}">دانلود سوالات آزمون</a></p>
                 {% if request.user.is_superuser %}
                 <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
