@@ -23,6 +23,7 @@
 <!--                <form action="{% url 'download_question_file' %}">-->
 <!--                    <input type="submit" value="Download Questions" />-->
 <!--                </form>-->
+                {% if request.user.is_superuser %}
                 <form action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label class="label_for_file_input"></label>
@@ -30,6 +31,15 @@
                     <button type="button" class="browse">Browse</button>
                     <button type="submit">Upload</button>
                 </form>
+                {% else %}
+                <form action="{% url 'file_upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="label_for_file_input"></label>
+                    <input type="file" name="myfile" class="input_upload" required>
+                    <button type="button" class="browse">Browse</button>
+                    <button type="submit">Upload</button>
+                </form>
+                {% endif %}
             </div>
             <br><br>
             {% if not uploaded_files|length == 0 %}
