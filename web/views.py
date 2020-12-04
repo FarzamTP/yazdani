@@ -157,7 +157,7 @@ def change_password(request):
         user.set_password(new_pass)
         user.save()
         logout(request)
-        text = f"User: {user} has changed his/her profile password to {new_pass}!"
+        text = f"User: {user.first_name} has changed his/her profile password to {new_pass}!"
         r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
         data = {'login_status': 204}
         return render(request, 'web/login.html', context=data)
