@@ -14,11 +14,17 @@ import os
 def home(request):
     if request.method == "GET":
         if request.user.is_authenticated:
+            questions_uploaded = False
+            if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
+                questions_uploaded = True
+
             if request.user.is_superuser:
                 user_docs = Document.objects.all()
             else:
                 user_docs = Document.objects.all().filter(author=request.user)
-            data = {'uploaded_files': user_docs}
+            data = {'uploaded_files': user_docs,
+                    'questions_uploaded': questions_uploaded}
+
             return render(request, 'web/home.html', context=data)
         else:
             return render(request, 'web/login.html')
@@ -40,6 +46,12 @@ def home(request):
 @login_required
 def file_upload(request):
     if request.method == 'POST':
+        os.system(f"cd {settings.BASE_DIR}/media && rm -rf {settings.BASE_DIR}/media/{request.user.username}")
+        questions_file_length = len(Document.objects.all().filter(author=request.user))
+        if questions_file_length != 0:
+            old_questions_file = Document.objects.all().filter(author=request.user)[0]
+            old_questions_file.delete()
+
         if request.FILES['myfile']:
             myfile = request.FILES['myfile']
             fs = FileSystemStorage()
@@ -54,11 +66,17 @@ def file_upload(request):
             return redirect(home)
     else:
         return redirect(home)
-    
-    
+
+
 @login_required
 def question_upload(request):
     if request.method == 'POST':
+        os.system(f"cd {settings.BASE_DIR}/media && rm {settings.BASE_DIR}/media/Mid-term-Questions.pdf")
+        questions_file_length = len(Document.objects.all().filter(author=request.user))
+        if questions_file_length != 0:
+            old_questions_file = Document.objects.all().filter(author=request.user)[0]
+            old_questions_file.delete()
+
         if request.FILES['myfile']:
             myfile = request.FILES['myfile']
             fs = FileSystemStorage()
@@ -81,6 +99,7 @@ def logout_user(request):
         logout(request)
         return redirect(home)
 
+
 def zip_and_download(request):
     if request.user.is_superuser:
         os.system(f"cd {settings.BASE_DIR} && rm -rf {settings.BASE_DIR}/All_files.zip && zip -r All_files.zip media")
@@ -90,11 +109,9 @@ def zip_and_download(request):
         # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
         return response
 
+
 def download_question_file(request):
     if request.user.is_authenticated:
-        os.system(f"cd {settings.BASE_DIR}/media && rm -rf {settings.MEDIA_URL}/Mid-term-Questions.pdf")
-        questions_file_path = os.path.join(settings.MEDIA_ROOT, 'Mid-term-Questions.pdf')
+        questions_file_path = os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')
         response = FileResponse(open(questions_file_path, 'rb'))
         return response
-
-
