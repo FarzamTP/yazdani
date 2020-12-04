@@ -12,7 +12,7 @@
                 {% if request.user.is_superuser %}
                 <h2 class="farsi"><b>پنل دسترسی ادمین</b></h2>
                 {% endif %}
-                <p class="farsi"><b>{{ request.user.username }}</b> خوش آمدید. </p>
+                <p class="farsi"><b>{{ request.user.first_name }}</b> خوش آمدید. </p>
                 {% if request.user.is_superuser %}
                 <p class="farsi">شما میتوانید سوالات آزمون را با فرمت <b>PDF</b>، با استفاده از دگمه‌های زیر انتخاب و ارسال کنید.</p>
                 {% else %}
