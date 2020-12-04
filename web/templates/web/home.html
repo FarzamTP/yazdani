@@ -17,6 +17,7 @@
                 <p class="farsi">شما میتوانید سوالات آزمون را با فرمت <b>PDF</b>، با استفاده از دگمه‌های زیر انتخاب و ارسال کنید.</p>
                 {% else %}
                 <p class="farsi">دانشجوی عزیز با استفاده از دگمه‌های زیر فایل پاسخ‌های آزمون خود را بارگزاری و ارسال کنید.</p>
+                <p class="farsi"><b>توجه</b>: نام فایل ارسالی را به صورت <b>لاتین و چسبیده</b> انتخاب کنید به طور مثال: Midterm.pdf</p>
                 {% endif %}
                 {% if questions_uploaded %}
                 <p class="farsi"><a style="color: red" href="{% url 'download_question_file' %}" download>دانلود سوالات آزمون</a></p>
