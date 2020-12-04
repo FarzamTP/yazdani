@@ -83,7 +83,8 @@ def logout_user(request):
 
 def zip_and_download(request):
     if request.user.is_superuser:
-        os.system("cd /var/www/yazdani/ && rm -rf /var/www/yazdani/All_files.zip && zip -r All_files.zip media")
+        os.system(f"cd {settings.BASE_DIR} && rm -rf {settings.BASE_DIR}/All_files.zip && zip -r All_files.zip media")
+        # os.system("cd /var/www/yazdani/ && rm -rf /var/www/yazdani/ && zip -r All_files.zip media")
         zip_file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
         response = FileResponse(open(zip_file_path, 'rb'))
         # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
@@ -91,6 +92,7 @@ def zip_and_download(request):
 
 def download_question_file(request):
     if request.user.is_authenticated:
+        os.system(f"cd {settings.BASE_DIR}/media && rm -rf {settings.MEDIA_URL}/Mid-term-Questions.pdf")
         questions_file_path = os.path.join(settings.MEDIA_ROOT, 'Mid-term-Questions.pdf')
         response = FileResponse(open(questions_file_path, 'rb'))
         return response
