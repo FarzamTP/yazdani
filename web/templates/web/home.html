@@ -23,13 +23,11 @@
                 <p class="farsi"><a style="color: red" href="{% url 'download_question_file' %}" download>دانلود سوالات آزمون</a></p>
                 {% endif %}
                 {% if request.user.is_superuser %}
+                {% if able_to_download_file_zip_file %}
                 <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
                 {% endif %}
+                {% endif %}
                 <p class="farsi"><a href="{% url 'logout' %}">خروج از حساب کاربری</a></p>
-
-<!--                <form action="{% url 'download_question_file' %}">-->
-<!--                    <input type="submit" value="Download Questions" />-->
-<!--                </form>-->
                 {% if request.user.is_superuser %}
                 <form action="{% url 'question_upload' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
