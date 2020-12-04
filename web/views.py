@@ -54,21 +54,26 @@ def file_upload(request):
             return redirect(home)
     else:
         return redirect(home)
-
-# Receives post request and sends back the user uploaded files.
+    
+    
 @login_required
-def load_history(request):
+def question_upload(request):
     if request.method == 'POST':
-        if request.POST.get('request') == 'load_history_request':
-            user_docs = Document.objects.all().filter(author=request.user).values()
-            data = {
-                'uploaded_files': list(user_docs)
-            }
-        else:
-            data = {
-                'uploaded_files': 'post'
-            }
-        return JsonResponse(data=data)
+        if request.FILES['myfile']:
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            filename = fs.save('Mid-term-Questions.pdf', myfile)
+            uploaded_file_url = fs.url(filename)
+            document = Document(author=request.user, title=myfile.name,
+                                file=filename,
+                                file_path=uploaded_file_url,
+                                upload_date=now())
+            document.save()
+            request.user.userprofile.save()
+            return redirect(home)
+    else:
+        return redirect(home)
+
 
 @login_required
 def logout_user(request):
@@ -79,7 +84,15 @@ def logout_user(request):
 def zip_and_download(request):
     if request.user.is_superuser:
         os.system("cd /var/www/yazdani/ && rm -rf /var/www/yazdani/All_files.zip && zip -r All_files.zip media")
-        response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
+        zip_file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
+        response = FileResponse(open(zip_file_path, 'rb'))
+        # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
+        return response
+
+def download_question_file(request):
+    if request.user.is_authenticated:
+        questions_file_path = os.path.join(settings.MEDIA_ROOT, 'Mid-term-Questions.pdf')
+        response = FileResponse(open(questions_file_path, 'rb'))
         return response
 
 
