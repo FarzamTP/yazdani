@@ -18,7 +18,7 @@
                 {% else %}
                 <p class="farsi">دانشجوی عزیز با استفاده از دگمه‌های زیر فایل پاسخ‌های آزمون خود را بارگزاری و ارسال کنید.</p>
                 {% endif %}
-                <p class="farsi"><a style="color: red" href="{% url 'download_question_file' %}">دانلود سوالات آزمون</a></p>
+                <p class="farsi"><a style="color: red" href="{% url 'download_question_file' %}" download>دانلود سوالات آزمون</a></p>
                 {% if request.user.is_superuser %}
                 <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
                 {% endif %}
@@ -65,7 +65,7 @@
                                 <td>{{ file.upload_date }}</td>
                                 <td>{{ file.author }}</td>
                                 <td>{{ file.title }}</td>
-                                <td><a href="{{ file.file_path }}">{{ file.file_path }}</a></td>
+                                <td><a href="{{ file.file_path }}" download>{{ file.file_path }}</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
