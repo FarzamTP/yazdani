@@ -53,11 +53,11 @@ def home(request):
 @login_required
 def file_upload(request):
     if request.method == 'POST':
-        os.system(f"cd {settings.BASE_DIR}/media && rm -rf {settings.BASE_DIR}/media/{request.user.username}")
-        questions_file_length = len(Document.objects.all().filter(author=request.user))
-        if questions_file_length != 0:
-            old_questions_file = Document.objects.all().filter(author=request.user)[0]
-            old_questions_file.delete()
+        # os.system(f"cd {settings.BASE_DIR}/media && rm -rf {settings.BASE_DIR}/media/{request.user.username}")
+        # questions_file_length = len(Document.objects.all().filter(author=request.user))
+        # if questions_file_length != 0:
+        #     old_questions_file = Document.objects.all().filter(author=request.user)[0]
+        #     old_questions_file.delete()
 
         if request.FILES['myfile']:
             myfile = request.FILES['myfile']
