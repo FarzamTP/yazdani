@@ -71,22 +71,33 @@ def file_upload(request):
                 questions_uploaded = True
 
             if now() < exam.due_time:
-                fs = FileSystemStorage()
-                filename = fs.save(request.user.username + '/' + myfile.name, myfile)
-                uploaded_file_url = fs.url(filename)
-                document = Document(exam=exam, author=request.user, title=myfile.name, type='Answer',
-                                    file=filename,
-                                    file_path=uploaded_file_url,
-                                    upload_date=now())
-                document.save()
-                request.user.userprofile.save()
-                data = {'uploaded_files': user_docs,
-                        'questions_uploaded': questions_uploaded,
-                        'exams': exams,
-                        'status': 200}
+                try:
+                    fs = FileSystemStorage()
+                    filename = fs.save(request.user.username + '/' + myfile.name, myfile)
+                    uploaded_file_url = fs.url(filename)
+                    document = Document(exam=exam, author=request.user, title=myfile.name, type='Answer',
+                                        file=filename,
+                                        file_path=uploaded_file_url,
+                                        upload_date=now())
+                    document.save()
+                    request.user.userprofile.save()
+                    data = {'uploaded_files': user_docs,
+                            'questions_uploaded': questions_uploaded,
+                            'exams': exams,
+                            'status': 200}
 
-                text = f"دانشجو {request.user.first_name} فایل {myfile.name} را آپلود کرد"
-                r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+                    text = f"دانشجو {request.user.first_name} فایل {myfile.name} را آپلود کرد"
+                    r = requests.get(
+                        url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+                except:
+                    data = {'uploaded_files': user_docs,
+                            'questions_uploaded': questions_uploaded,
+                            'exams': exams,
+                            'status': 405}
+
+                    text = f"دانشجو {request.user.first_name} فایل {myfile.name} را نتوانست آپلود کند"
+                    r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+
                 return render(request, 'web/home.html', context=data)
             else:
                 data = {'uploaded_files': user_docs,
@@ -94,8 +105,7 @@ def file_upload(request):
                         'exams': exams,
                         'status': 403}
 
-                text = f"دانشجو {request.user.first_name} فایل {myfile.name} را نتوانست آپلود کند"
-                # text = f"{request.user.first_name} failed to upload answer f{myfile.name}."
+                text = f"دانشجو {request.user.first_name} فایل {myfile.name} را خارج از تایم نتوانست آپلود کند"
                 r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
                 return render(request, 'web/home.html', context=data)
     else:

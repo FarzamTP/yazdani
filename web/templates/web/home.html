@@ -17,6 +17,10 @@
                 <div class="alert alert-success">
                     <h3 class="farsi">فایل شما با موفقیت آپلود شد.</h3>
                 </div>
+                {% elif status == 405 %}
+                <div class="alert alert-danger">
+                    <h3 class="farsi">فایل شما آپلود نشد. لطفا توضیحات داده شده در خصوص نام فایل دقت بفرمائید.</h3>
+                </div>
                 {% endif %}
 
                 {% if request.user.is_superuser %}
