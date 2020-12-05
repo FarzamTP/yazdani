@@ -39,6 +39,7 @@
                 {% if request.user.is_superuser %}
                 {% if able_to_download_file_zip_file %}
                 <p class="farsi"><a href="{% url 'zip_and_download' %}">فشرده‌سازی و دریافت لینک تمامی فایل‌ها</a></p>
+                <p class="farsi"><a href="{% url 'see_unsigned_names' %}">مشاهده اسامی دانشجویانی که فایل پایانی خود را ارسال نکردند.</a></p>
                 {% endif %}
                 {% endif %}
                 <p class="farsi"><a href="{% url 'change_password' %}">تغییر رمز عبور</a></p>

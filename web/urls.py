@@ -12,6 +12,7 @@ urlpatterns = [
     url('^home/question_upload/$', views.question_upload, name='question_upload'),
     url('^home/change_password/$', views.change_password, name='change_password'),
     url('^home/zip_and_download/$', views.zip_and_download, name='zip_and_download'),
+    url('^home/see_unsigned_names/$', views.see_unsigned_names, name='see_unsigned_names'),
     url('^home/download_question_file/$', views.download_question_file, name='download_question_file'),
 ]
 

@@ -188,3 +188,18 @@ def change_password(request):
         r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
         data = {'login_status': 204}
         return render(request, 'web/login.html', context=data)
+
+
+@login_required
+def see_unsigned_names(request):
+    if request.method == "GET":
+        s = """
+        User: 97217001-امیرمحسن ابراهیمی
+User: 96217113-مهدی اشجع
+User: 95217011-یاسمن امامی خوانساری
+User: 97217091-علی میرزائی
+User: 96217067-علی قدرتی یکتا
+User: 97217055-محمدعلی شمس‌نژاد
+User: 96217046-مهدی سلطانی
+        """
+        return HttpResponse(s)
