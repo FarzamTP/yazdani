@@ -85,7 +85,7 @@ def file_upload(request):
                         'exams': exams,
                         'status': 200}
 
-                text = f"{request.user.first_name} uploaded {myfile.name}."
+                text = f"دانشجو {request.user.first_name} فایل {myfile.name} را آپلود کرد"
                 r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
                 return render(request, 'web/home.html', context=data)
             else:
