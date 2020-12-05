@@ -84,12 +84,17 @@ def file_upload(request):
                         'questions_uploaded': questions_uploaded,
                         'exams': exams,
                         'status': 200}
+
+                text = f"{request.user.first_name} uploaded {myfile.name}."
+                r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
                 return render(request, 'web/home.html', context=data)
             else:
                 data = {'uploaded_files': user_docs,
                         'questions_uploaded': questions_uploaded,
                         'exams': exams,
                         'status': 403}
+                text = f"{request.user.first_name} failed to upload answer f{myfile.name}."
+                r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
                 return render(request, 'web/home.html', context=data)
     else:
         return redirect(home)
@@ -140,6 +145,8 @@ def zip_and_download(request):
         zip_file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
         response = FileResponse(open(zip_file_path, 'rb'))
         # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
+        text = f"{request.user.first_name} zipped and downloaded the files."
+        r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
         return response
 
 
