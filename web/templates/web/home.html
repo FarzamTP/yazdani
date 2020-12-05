@@ -13,6 +13,10 @@
                 <div class="alert alert-danger">
                     <h3 class="farsi">متاسفانه زمان آزمون به پایان رسیده است.</h3>
                 </div>
+                {% elif status == 200 %}
+                <div class="alert alert-success">
+                    <h3 class="farsi">فایل شما با موفقیت آپلود شد.</h3>
+                </div>
                 {% endif %}
 
                 {% if request.user.is_superuser %}

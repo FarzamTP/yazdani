@@ -74,7 +74,15 @@ def file_upload(request):
                                     upload_date=now())
                 document.save()
                 request.user.userprofile.save()
-                return redirect(home)
+
+                questions_uploaded = False
+                if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
+                    questions_uploaded = True
+                exams = Exam.objects.all()
+                data = {'questions_uploaded': questions_uploaded,
+                        'exams': exams,
+                        'status': 200}
+                return render(request, 'web/home.html', context=data)
             else:
                 questions_uploaded = False
                 if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
