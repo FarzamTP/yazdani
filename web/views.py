@@ -93,7 +93,9 @@ def file_upload(request):
                         'questions_uploaded': questions_uploaded,
                         'exams': exams,
                         'status': 403}
-                text = f"{request.user.first_name} failed to upload answer f{myfile.name}."
+
+                text = f"دانشجو {request.user.first_name} فایل {myfile.name} را نتوانست آپلود کند"
+                # text = f"{request.user.first_name} failed to upload answer f{myfile.name}."
                 r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
                 return render(request, 'web/home.html', context=data)
     else:
@@ -145,7 +147,8 @@ def zip_and_download(request):
         zip_file_path = os.path.join(settings.BASE_DIR, 'All_files.zip')
         response = FileResponse(open(zip_file_path, 'rb'))
         # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
-        text = f"{request.user.first_name} zipped and downloaded the files."
+        text = f"یوزر {request.user.first_name} فایل‌ها رو زیپ و دریافت کرد"
+        # text = f"{request.user.first_name} zipped and downloaded the files."
         r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
         return response
 
