@@ -63,6 +63,12 @@ def file_upload(request):
             myfile = request.FILES['myfile']
             exam_name = request.POST.get('exam_name')
             exam = Exam.objects.all().filter(name=exam_name)[0]
+            user_docs = Document.objects.all().filter(author=request.user)
+            exams = Exam.objects.all()
+
+            questions_uploaded = False
+            if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
+                questions_uploaded = True
 
             if now() < exam.due_time:
                 fs = FileSystemStorage()
@@ -74,21 +80,14 @@ def file_upload(request):
                                     upload_date=now())
                 document.save()
                 request.user.userprofile.save()
-
-                questions_uploaded = False
-                if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
-                    questions_uploaded = True
-                exams = Exam.objects.all()
-                data = {'questions_uploaded': questions_uploaded,
+                data = {'uploaded_files': user_docs,
+                        'questions_uploaded': questions_uploaded,
                         'exams': exams,
                         'status': 200}
                 return render(request, 'web/home.html', context=data)
             else:
-                questions_uploaded = False
-                if os.path.exists(os.path.join(settings.BASE_DIR, 'media/Mid-term-Questions.pdf')):
-                    questions_uploaded = True
-                exams = Exam.objects.all()
-                data = {'questions_uploaded': questions_uploaded,
+                data = {'uploaded_files': user_docs,
+                        'questions_uploaded': questions_uploaded,
                         'exams': exams,
                         'status': 403}
                 return render(request, 'web/home.html', context=data)
