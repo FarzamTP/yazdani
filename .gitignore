@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 media/*
-db.sqlite3
+# db.sqlite3
 static/*
 .idea
 web/migrations/*
