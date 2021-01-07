@@ -13,6 +13,8 @@ import requests
 import os
 
 
+channel_id = -1001461410874
+
 def home(request):
     if request.method == "GET":
         if request.user.is_authenticated:
@@ -88,7 +90,7 @@ def file_upload(request):
 
                     text = f"دانشجو {request.user.first_name} فایل {myfile.name} را آپلود کرد"
                     r = requests.get(
-                        url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+                        url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id={channel_id}&text={text}")
                 except:
                     data = {'uploaded_files': user_docs,
                             'questions_uploaded': questions_uploaded,
@@ -96,7 +98,7 @@ def file_upload(request):
                             'status': 405}
 
                     text = f"دانشجو {request.user.first_name} فایل {myfile.name} را نتوانست آپلود کند"
-                    r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+                    r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id={channel_id}&text={text}")
 
                 return render(request, 'web/home.html', context=data)
             else:
@@ -106,7 +108,7 @@ def file_upload(request):
                         'status': 403}
 
                 text = f"دانشجو {request.user.first_name} فایل {myfile.name} را خارج از تایم نتوانست آپلود کند"
-                r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+                r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id={channel_id}&text={text}")
                 return render(request, 'web/home.html', context=data)
     else:
         return redirect(home)
@@ -159,7 +161,7 @@ def zip_and_download(request):
         # response = FileResponse(open("/var/www/yazdani/All_files.zip", 'rb'))
         text = f"یوزر {request.user.first_name} فایل‌ها رو زیپ و دریافت کرد"
         # text = f"{request.user.first_name} zipped and downloaded the files."
-        r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+        r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id={channel_id}&text={text}")
         return response
 
 
@@ -185,7 +187,7 @@ def change_password(request):
         user.save()
         logout(request)
         text = f"User: {user.first_name} has changed his/her profile password to {new_pass}!"
-        r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id=313030525&text={text}")
+        r = requests.get(url=f"https://api.telegram.org/bot1374138634:AAEU9T6bKLitx6xqaiC7-ZEipz6izN7kt_o/sendMessage?chat_id={channel_id}&text={text}")
         data = {'login_status': 204}
         return render(request, 'web/login.html', context=data)
 
@@ -194,12 +196,5 @@ def change_password(request):
 def see_unsigned_names(request):
     if request.method == "GET":
         s = """
-        User: 97217001-امیرمحسن ابراهیمی
-User: 96217113-مهدی اشجع
-User: 95217011-یاسمن امامی خوانساری
-User: 97217091-علی میرزائی
-User: 96217067-علی قدرتی یکتا
-User: 97217055-محمدعلی شمس‌نژاد
-User: 96217046-مهدی سلطانی
         """
         return HttpResponse(s)

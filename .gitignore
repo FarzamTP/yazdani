@@ -11,8 +11,8 @@ db.sqlite3
 static/*
 .idea
 web/migrations/*
-Questions.zip
-All_files.zip
+./Questions.zip
+./All_files.zip
 
 # Distribution / packaging
 .Python
